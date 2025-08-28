@@ -1,0 +1,29 @@
+{
+  "Navbar": {
+    "navlink1": "Home",
+    "navlink2": "About",
+    "navlink3": "Store",
+    "navlink4": "Contacts",
+    "button": "Get Advice"
+  },
+  "Footer": {
+    "description": "Unique sushi and rolls crafted with traditional Japanese recipes and a love for detail. Discover the perfect blend of fresh ingredients and refined flavors in our menu.",
+    "backToTop": "Back to Top",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "explore": "Explore",
+    "explore-link1": "Home",
+    "explore-link2": "About",
+    "explore-link3": "Store",
+    "explore-link4": "Contacts",
+
+    "privacyPolicyContent": "This is the privacy policy content.",
+    "termsOfServiceContent": "This is the terms of service content."
+  },
+  "LocaleSwitcher": {
+    "en": "English",
+    "fr": "Français",
+    "nl": "Nederlands",
+    "label": "Language"
+  }
+}

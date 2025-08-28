@@ -1,0 +1,15 @@
+{
+    "Navbar": {
+        "navlink1": "Accueil",
+        "navlink2": "À propos",
+        "navlink3": "Services",
+        "navlink4": "Nouveautés",
+        "button": "Obtenir des conseils"
+    },
+    "LocaleSwitcher": {
+        "en": "English",
+        "fr": "Français",
+        "nl": "Nederlands",
+        "label": "Langue"
+    }
+}

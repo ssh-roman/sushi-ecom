@@ -1,0 +1,15 @@
+{
+  "Navbar": {
+    "navlink1": "Home",
+    "navlink2": "Over Ons",
+    "navlink3": "Diensten",
+    "navlink4": "Nieuws",
+    "button": "Krijg Advies"
+  },
+  "LocaleSwitcher": {
+    "en": "English",
+    "fr": "Français",
+    "nl": "Nederlands",
+    "label": "Taal"
+  }
+}
