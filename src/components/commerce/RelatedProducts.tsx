@@ -1,18 +1,21 @@
 import { getPayload } from 'payload'
 import config from '../../payload.config'
+import { Media } from '@/payload-types';
 
 import Link from "next/link";
 import Image from "next/image";
 import AddToCart from '../microComponents/ecom/AddToCart';
 
-const ProductCard = ({ id, image, name, ingredients, price } : { id: number, image: string, name: string, ingredients: string, price: number }) => {
+const ProductCard = ({ id, image, name, ingredients, price } : { id: number, image: Media | number | null | undefined, name: string, ingredients: string, price: number }) => {
     const formattedPrice = price.toFixed(2);
+
+    const imageURL = image as Media;
 
     return (
         <Link href={`/shop/${id}`} className="flex flex-col gap-5 px-0 py-5 md:p-5 lg:p-7 group hover:shadow-lg transition-shadow">
             <div className="overflow-hidden aspect-[4/3]">
                 <Image 
-                    src={image} 
+                    src={imageURL?.url as string}
                     alt={name} 
                     className="hover:scale-110 transition-transform duration-300 aspect-[4/3] object-cover w-full h-full" 
                     width={500} 
@@ -29,7 +32,7 @@ const ProductCard = ({ id, image, name, ingredients, price } : { id: number, ima
                     productId={id} 
                     productName={name}
                     productPrice={price}
-                    productImage={image}
+                    productImage={imageURL?.url as string}
                     hasQuantity={false}
                 />
             </div>
@@ -41,7 +44,7 @@ export default async function RelatedProducts() {
     const payload = await getPayload({ config })
     const allSushiProducts = await payload.find({
         collection: 'products',
-        where: { 'category.name': { equals: 'Sushi' } }
+        where: { 'category.name': { equals: 'Sushi' } },
     });
     const shuffled = allSushiProducts.docs.sort(() => 0.5 - Math.random());
     const products = { ...allSushiProducts, docs: shuffled.slice(0, 3) };
@@ -54,7 +57,7 @@ export default async function RelatedProducts() {
                     <ProductCard 
                         key={product.id}
                         id={product.id}
-                        image={product.image?.url as string}
+                        image={product.image}
                         name={product.name}
                         ingredients={product.ingredients as string}
                         price={product.price}

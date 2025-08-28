@@ -1,14 +1,15 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Category = ({ title, imageUrl, description } : { title: string; imageUrl: string; description: string; }) => {
   return (
-    <a href="/categories/sushi" className="w-full rounded-[200px] overflow-hidden relative hover:scale-105 hover:rounded-bl-3xl transition-all duration-300">
+    <Link href="/categories/sushi" className="w-full rounded-[200px] overflow-hidden relative hover:scale-105 hover:rounded-bl-3xl transition-all duration-300">
       <Image src={imageUrl} alt={title} width={600} height={500} />
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white text-center">
         <h3 className="text-2xl lg:text-3xl font-light font-heading tracking-[-0.5px] whitespace-nowrap">{title}</h3>
         <p className="text-sm lg:text-base text-[#e94222] mt-2">{description}</p>
       </div>
-    </a>
+    </Link>
   );
 };
 

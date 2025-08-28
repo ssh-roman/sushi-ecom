@@ -9,7 +9,7 @@ const Header = ({page} : {page: string}) => {
                 backgroundBlendMode: 'darken'
             }}>
             <Link href="/" className='text-white hover:text-[#e94222] transition-all duration-300'>home</Link>
-            <span>//</span>
+            <span>{'//'}</span>
             <span className='text-[#e94222] whitespace-nowrap'>{page}</span>
         </div>
     );

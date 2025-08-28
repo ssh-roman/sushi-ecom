@@ -1,18 +1,21 @@
 import Image from "next/image"
 import Link from "next/link";
+import { Media } from '@/payload-types';
 import { ShoppingCart } from "lucide-react";
 
 import { getPayload } from 'payload'
 import config from '../../payload.config'
 
-const ProductCard = ({ id, image, title, description, weight, price } : { id: number, image: string, title: string, description: string, weight: string, price: number }) => {
+const ProductCard = ({ id, image, title, description, weight, price } : { id: number, image: Media | number | null | undefined, title: string, description: string, weight: string, price: number }) => {
     const formattedPrice = price.toFixed(2);
+
+    const imageURL = image as Media;
 
     return (
         <Link href={`/shop/${id}`} className="flex flex-col gap-5 px-0 py-5 md:p-5 lg:p-7 group hover:shadow-lg transition-shadow">
             <div className="overflow-hidden aspect-[4/3]">
                 <Image 
-                    src={image} 
+                    src={imageURL?.url as string} 
                     alt={title} 
                     className="hover:scale-110 transition-transform duration-300 aspect-[4/3] object-cover w-full h-full" 
                     width={500} 
@@ -51,7 +54,7 @@ async function PopularProducts() {
                     <ProductCard
                         key={product.id}
                         id={product.id}
-                        image={product.image?.url}
+                        image={product.image}
                         title={product.name}
                         description={product.ingredients}
                         weight={product.weight}

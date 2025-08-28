@@ -24,6 +24,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  defaultDepth: 1,
   collections: [
     Users,
     Products,
