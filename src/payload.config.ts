@@ -40,12 +40,12 @@ export default buildConfig({
     process.env.DATABASE_TYPE === 'PG'
       ? postgresAdapter({
           pool: {
-            connectionString: process.env.DATABASE_URI || '',
+            connectionString: process.env.DATABASE_URL || '',
           },
         })
       : sqliteAdapter({
           client: {
-            url: process.env.DATABASE_URI || '',
+            url: process.env.DATABASE_URL || '',
           },
         }),
   sharp,
