@@ -32,9 +32,10 @@ WORKDIR /app
 COPY --from=base /app/node_modules ./node_modules
 
 # Copy source code
-COPY ./src ./src
-COPY next.config.mjs ./
+COPY tsconfig.json ./
+COPY src ./src
 COPY public ./public
+COPY next.config.mjs ./
 
 # Build Next.js
 RUN if [ -f yarn.lock ]; then \
