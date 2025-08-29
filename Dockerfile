@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy package files
-COPY package.json package-lock.json yarn.lock pnpm-lock.yaml* ./
+COPY package.json package-lock.json ./
 
 # Install dependencies based on lockfile
 RUN if [ -f yarn.lock ]; then \
