@@ -1,55 +1,65 @@
-# --------- Base Image ---------
-FROM node:22.12.0-alpine AS base
+# ---------- BASE IMAGE ----------
+FROM node:22-bullseye-slim AS base
 WORKDIR /app
 
-# Install system dependencies for Next.js and libsql if needed
-RUN apk add --no-cache libc6-compat git
+# Install system dependencies for native modules
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3 \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# --------- Install Dependencies ---------
-FROM base AS deps
-WORKDIR /app
+# Copy package files
+COPY package.json package-lock.json yarn.lock pnpm-lock.yaml* ./
 
-# Copy package manifests
-COPY package.json package-lock.json yarn.lock* pnpm-lock.yaml* ./
-
-# Install dependencies according to package manager
-RUN if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-    elif [ -f package-lock.json ]; then npm install; \
-    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --frozen-lockfile; \
-    else echo "No lockfile found" && exit 1; \
+# Install dependencies based on lockfile
+RUN if [ -f yarn.lock ]; then \
+        yarn install --frozen-lockfile; \
+    elif [ -f package-lock.json ]; then \
+        npm ci; \
+    elif [ -f pnpm-lock.yaml ]; then \
+        corepack enable pnpm && pnpm install --frozen-lockfile; \
+    else \
+        echo "No lockfile found" && exit 1; \
     fi
 
-# --------- Build ---------
+# ---------- BUILD IMAGE ----------
 FROM base AS builder
 WORKDIR /app
 
-# Copy node_modules from deps stage
-COPY --from=deps /app/node_modules ./node_modules
+# Copy dependencies
+COPY --from=base /app/node_modules ./node_modules
 
-# Copy the rest of the source code
-COPY . .
+# Copy source code
+COPY ./src ./src
+COPY next.config.mjs ./
+COPY public ./public
 
-# Build the Next.js app
-RUN if [ -f yarn.lock ]; then yarn build; \
-    elif [ -f package-lock.json ]; then npm run build; \
-    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm build; \
+# Build Next.js
+RUN if [ -f yarn.lock ]; then \
+        yarn build; \
+    elif [ -f package-lock.json ]; then \
+        npm run build; \
+    elif [ -f pnpm-lock.yaml ]; then \
+        corepack enable pnpm && pnpm build; \
     fi
 
-# --------- Production Image ---------
-FROM node:22.12.0-alpine AS runner
+# ---------- PRODUCTION IMAGE ----------
+FROM node:22-bullseye-slim AS runner
 WORKDIR /app
 
-# Create a non-root user for security
-RUN addgroup --system --gid 1001 nextgroup && adduser --system --uid 1001 nextuser
-USER nextuser:nextgroup
-
-# Copy built Next.js output
+# Copy build output
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/public ./public
 
-# Expose port 3000
+# Set environment variables
+ENV NODE_ENV=production
+# ENV NEXT_TELEMETRY_DISABLED=1  # uncomment to disable Next.js telemetry
+
+# Expose port
 EXPOSE 3000
 
-# Start the Next.js server
+# Start the app
 CMD ["node", "server.js"]
