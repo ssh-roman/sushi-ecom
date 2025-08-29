@@ -10,6 +10,8 @@ WORKDIR /app
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN npm install
 
+RUN npm install --platform=linux --arch=x64 @libsql/linux-x64-musl
+
 # Build the Next.js application
 FROM base AS builder
 WORKDIR /app
