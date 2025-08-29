@@ -19,7 +19,8 @@ RUN \
   fi
 
 RUN npm fund
-RUN npm install -g npm@11.5.2
+RUN npm install @libsql/linux-x64-musl
+
 
 # Rebuild the source code only when needed
 FROM base AS builder
