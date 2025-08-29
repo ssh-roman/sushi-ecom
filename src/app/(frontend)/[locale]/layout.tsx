@@ -30,6 +30,9 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={clsx(jost.variable)}>
+      <head>
+        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/fraunces-144pt-s000" />
+      </head>
       <body>
         <NextIntlClientProvider>
           <CartProvider>
