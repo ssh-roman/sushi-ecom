@@ -62,5 +62,8 @@ ENV NODE_ENV=production
 # Expose port
 EXPOSE 3000
 
+ENV PORT=3000
+
 # Start the app
+ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
