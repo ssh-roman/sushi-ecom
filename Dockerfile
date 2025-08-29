@@ -17,7 +17,7 @@ COPY package.json package-lock.json ./
 RUN if [ -f yarn.lock ]; then \
         yarn install --frozen-lockfile; \
     elif [ -f package-lock.json ]; then \
-        npm ci; \
+        npm install; \
     elif [ -f pnpm-lock.yaml ]; then \
         corepack enable pnpm && pnpm install --frozen-lockfile; \
     else \
